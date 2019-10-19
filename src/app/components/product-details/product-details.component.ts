@@ -1,37 +1,21 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 
-import { AppComponent } from './app.component';
-import { TopBarComponent } from './components/top-bar/top-bar.component';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductAlertsComponent } from './components/product-alerts/product-alerts.component';
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { products } from "../../models/products";
 
-@NgModule({
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: '', component: ProductListComponent },
-      
-    ])
-  ],
-  declarations: [
-    AppComponent,
-    TopBarComponent,
-    ProductListComponent,
-    ProductAlertsComponent,
-    ProductDetailsComponent
-  ],
-  bootstrap: [ AppComponent ]
+@Component({
+  selector: "app-product-details",
+  templateUrl: "./product-details.component.html",
+  styleUrls: ["./product-details.component.css"]
 })
-export class AppModule { }
+export class ProductDetailsComponent implements OnInit {
+  product;
 
+  constructor(private route: ActivatedRoute) {}
 
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/
+  ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.product = products[params.get("productId")];
+    });
+  }
+}
